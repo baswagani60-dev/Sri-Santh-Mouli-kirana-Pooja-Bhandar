@@ -64,3 +64,15 @@ footer {
     color: BLACK;
     margin-top: 30px;
 }
+.cart {
+    background: white;
+    padding: 20px;
+    margin: 30px;
+    border-radius: 10px;
+}
+.cart button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
