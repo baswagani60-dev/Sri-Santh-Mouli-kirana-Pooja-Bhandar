@@ -1,94 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRI SANTH MOULI KIRANA & POOJA BHANDAR - All-in-One Store</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+function showStore(storeId) {
+    const stores = document.querySelectorAll(".store");
+    stores.forEach(store => store.classList.add("hidden"));
+    document.getElementById(storeId).classList.remove("hidden");
+}
 
-    <header>
-        <h1>🛍️ SRI SANTH MOULI KIRANA & POOJA BHANDAR</h1>
-        <p>Pooja | Kirana | Ayurvedic – All in One Place</p>
-    </header>
+let cart = {};
 
-    <nav>
-        <button onclick="showStore('pooja')">🪔 Pooja Store</button>
-        <button onclick="showStore('kirana')">🛒 Kirana Store</button>
-        <button onclick="showStore('ayurveda')">🌿 Ayurvedic Store</button>
-    </nav>
+function addToCart(product, price) {
+    if (cart[product]) {
+        cart[product].qty++;
+    } else {
+        cart[product] = { price: price, qty: 1 };
+    }
+    displayCart();
+}
 
-    <!-- POOJA STORE -->
-    <section id="pooja" class="store">
-        <h2>🪔 Pooja Store</h2>
-        <div class="products">
-            <div class="card">
-                <h3>Agarbatti</h3>
-                <p>Fragrant incense sticks</p>
-                <span>₹40</span>
-            </div>
-            <div class="card">
-                <h3>Camphor</h3>
-                <p>Pure pooja camphor</p>
-                <span>₹60</span>
-            </div>
-            <div class="card">
-                <h3>Pooja Thali</h3>
-                <p>Complete pooja plate set</p>
-                <span>₹250</span>
-            </div>
-        </div>
-    </section>
+function changeQty(product, change) {
+    cart[product].qty += change;
+    if (cart[product].qty <= 0) {
+        delete cart[product];
+    }
+    displayCart();
+}
 
-    <!-- KIRANA STORE -->
-    <section id="kirana" class="store hidden">
-        <h2>🛒 Kirana Store</h2>
-        <div class="products">
-            <div class="card">
-                <h3>Rice (1kg)</h3>
-                <p>Premium quality rice</p>
-                <span>₹55</span>
-            </div>
-            <div class="card">
-                <h3>Wheat Flour</h3>
-                <p>Fresh atta</p>
-                <span>₹45</span>
-            </div>
-            <div class="card">
-                <h3>Sugar</h3>
-                <p>Refined sugar</p>
-                <span>₹42</span>
-            </div>
-        </div>
-    </section>
+function displayCart() {
+    const cartDiv = document.getElementById("cartItems");
+    cartDiv.innerHTML = "";
+    let total = 0;
 
-    <!-- AYURVEDIC STORE -->
-    <section id="ayurveda" class="store hidden">
-        <h2>🌿 Ayurvedic Store</h2>
-        <div class="products">
-            <div class="card">
-                <h3>Chyawanprash</h3>
-                <p>Immunity booster</p>
-                <span>₹320</span>
-            </div>
-            <div class="card">
-                <h3>Ashwagandha Powder</h3>
-                <p>Stress relief herb</p>
-                <span>₹180</span>
-            </div>
-            <div class="card">
-                <h3>Herbal Oil</h3>
-                <p>Pain relief oil</p>
-                <span>₹150</span>
-            </div>
-        </div>
-    </section>
+    for (let product in cart) {
+        let item = cart[product];
+        total += item.price * item.qty;
 
-    <footer>
-        <p>📞 Contact: +91 9441994806, +91 9963393807 | 📍 Beside MPDO ffice, Sirikonda road, Ichoda, Adilabad, TG 504307 </p>
-    </footer>
+        cartDiv.innerHTML += `
+            <div class="cart-item">
+                <span>${product} - ₹${item.price}</span>
+                <div>
+                    <button class="qty-btn" onclick="changeQty('${product}', -1)">−</button>
+                    ${item.qty}
+                    <button class="qty-btn" onclick="changeQty('${product}', 1)">+</button>
+                </div>
+            </div>
+        `;
+    }
 
-    <script src="script.js"></script>
-</body>
-</html>
+    document.getElementById("totalPrice").textContent = total;
+}
+
+function orderWhatsApp() {
+    let message = "Order Details:%0A";
+    let total = 0;
+
+    for (let product in cart) {
+        let item = cart[product];
+        total += item.price * item.qty;
+        message += `${product} x${item.qty} - ₹${item.price * item.qty}%0A`;
+    }
+
+    message += "Total: ₹" + total;
+    window.open("https://wa.me/919441994806?text=" + message);
+}
