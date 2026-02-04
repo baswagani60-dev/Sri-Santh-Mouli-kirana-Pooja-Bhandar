@@ -1,62 +1,130 @@
-function showStore(storeId) {
-    const stores = document.querySelectorAll(".store");
-    stores.forEach(store => store.classList.add("hidden"));
-    document.getElementById(storeId).classList.remove("hidden");
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRI SANTH MOULI KIRANA & POOJA BHANDAR</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-let cart = {};
+<header>
+    <h1>🛍️ SRI SANTH MOULI KIRANA & POOJA BHANDAR</h1>
+    <p>Pooja | Kirana | Ayurvedic – All in One Place</p>
+</header>
 
-function addToCart(product, price) {
-    if (cart[product]) {
-        cart[product].qty++;
-    } else {
-        cart[product] = { price: price, qty: 1 };
-    }
-    displayCart();
-}
+<nav>
+    <button onclick="showStore('pooja')">🪔 Pooja Store</button>
+    <button onclick="showStore('kirana')">🛒 Kirana Store</button>
+    <button onclick="showStore('ayurveda')">🌿 Ayurvedic Store</button>
+</nav>
 
-function changeQty(product, change) {
-    cart[product].qty += change;
-    if (cart[product].qty <= 0) {
-        delete cart[product];
-    }
-    displayCart();
-}
+<!-- 🪔 POOJA STORE -->
+<section id="pooja" class="store">
+    <h2>🪔 Pooja Store</h2>
+    <div class="products">
 
-function displayCart() {
-    const cartDiv = document.getElementById("cartItems");
-    cartDiv.innerHTML = "";
-    let total = 0;
+        <div class="card">
+            <h3>Agarbatti</h3>
+            <p>Fragrant incense sticks</p>
+            <span>₹40</span>
+            <button onclick="addToCart('Agarbatti',40)">Add to Cart</button>
+        </div>
 
-    for (let product in cart) {
-        let item = cart[product];
-        total += item.price * item.qty;
+        <div class="card">
+            <h3>Camphor</h3>
+            <p>Pure pooja camphor</p>
+            <span>₹60</span>
+            <button onclick="addToCart('Camphor',60)">Add to Cart</button>
+        </div>
 
-        cartDiv.innerHTML += `
-            <div class="cart-item">
-                <span>${product} - ₹${item.price}</span>
-                <div>
-                    <button class="qty-btn" onclick="changeQty('${product}', -1)">−</button>
-                    ${item.qty}
-                    <button class="qty-btn" onclick="changeQty('${product}', 1)">+</button>
-                </div>
-            </div>
-        `;
-    }
+        <div class="card">
+            <h3>Pooja Thali</h3>
+            <p>Complete pooja plate set</p>
+            <span>₹250</span>
+            <button onclick="addToCart('Pooja Thali',250)">Add to Cart</button>
+        </div>
 
-    document.getElementById("totalPrice").textContent = total;
-}
+    </div>
+</section>
 
-function orderWhatsApp() {
-    let message = "Order Details:%0A";
-    let total = 0;
+<!-- 🛒 KIRANA STORE -->
+<section id="kirana" class="store hidden">
+    <h2>🛒 Kirana Store</h2>
+    <div class="products">
 
-    for (let product in cart) {
-        let item = cart[product];
-        total += item.price * item.qty;
-        message += `${product} x${item.qty} - ₹${item.price * item.qty}%0A`;
-    }
+        <div class="card">
+            <h3>Rice (1kg)</h3>
+            <p>Premium quality rice</p>
+            <span>₹55</span>
+            <button onclick="addToCart('Rice 1kg',55)">Add to Cart</button>
+        </div>
 
-    message += "Total: ₹" + total;
-    window.open("https://wa.me/919441994806?text=" + message);
-}
+        <div class="card">
+            <h3>Wheat Flour (Atta)</h3>
+            <p>Fresh atta packet</p>
+            <span>₹45</span>
+            <button onclick="addToCart('Wheat Flour',45)">Add to Cart</button>
+        </div>
+
+        <div class="card">
+            <h3>Toor Dal</h3>
+            <p>High quality dal</p>
+            <span>₹120</span>
+            <button onclick="addToCart('Toor Dal',120)">Add to Cart</button>
+        </div>
+
+        <div class="card">
+            <h3>Sugar</h3>
+            <p>Refined sugar</p>
+            <span>₹42</span>
+            <button onclick="addToCart('Sugar',42)">Add to Cart</button>
+        </div>
+
+    </div>
+</section>
+
+<!-- 🌿 AYURVEDIC STORE -->
+<section id="ayurveda" class="store hidden">
+    <h2>🌿 Ayurvedic Store</h2>
+    <div class="products">
+
+        <div class="card">
+            <h3>Chyawanprash</h3>
+            <p>Immunity booster</p>
+            <span>₹320</span>
+            <button onclick="addToCart('Chyawanprash',320)">Add to Cart</button>
+        </div>
+
+        <div class="card">
+            <h3>Ashwagandha Powder</h3>
+            <p>Stress relief herb</p>
+            <span>₹180</span>
+            <button onclick="addToCart('Ashwagandha Powder',180)">Add to Cart</button>
+        </div>
+
+        <div class="card">
+            <h3>Herbal Oil</h3>
+            <p>Pain relief oil</p>
+            <span>₹150</span>
+            <button onclick="addToCart('Herbal Oil',150)">Add to Cart</button>
+        </div>
+
+    </div>
+</section>
+
+<!-- 🛒 AMAZON STYLE CART -->
+<section class="cart">
+    <h2>🛒 Shopping Cart</h2>
+    <div id="cartItems"></div>
+    <h3>Total: ₹<span id="totalPrice">0</span></h3>
+    <button onclick="orderWhatsApp()">Proceed to Order</button>
+</section>
+
+<footer>
+    <p>📞 Contact: +91 9573842107, +91 9963393807 | 📍 Ichoda, Adilabad, TG</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
